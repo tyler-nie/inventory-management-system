@@ -34,9 +34,35 @@ def add_item():
             flash('You have added a new item.')
         except:
             # if the item already exists
-            flash('Sorry: item name already exists')
+            flash('Sorry: item name already exists.')
         
         # redirect to items page
         return redirect(url_for('list_items'))
+
     # load item template
-    return render_template('items/item.html', action ="Add", add_item = add_item, form = form, title = "Add Item")
+    return render_template('items/item.html', action = "Add", add_item = add_item, form = form, title = "Add Item")
+
+def edit_item(id):
+    """
+    Edit an Item
+    """
+
+    add_item = False
+
+    item = Item.query.get_or_404(id)
+    form = ItemForm(obj=item)
+    if form.validate_on_submit:
+        item.name = form.name.data
+        item.quantity = form.quantity.data
+        item.description = form.description.data
+        db.session.commit()
+        flash('You have edited the item.')
+
+        # redirect to items page
+        return redirect(url_for('list_items'))
+
+    form.description.data = item.description
+    form.quantity.data = item.quantity
+    form.name.data = item.name
+    # load item template
+    return render_template('items/item.html', action ="Edit", add_item = add_item, form = form, item = item, title = "Edit Item")
