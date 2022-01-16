@@ -1,6 +1,8 @@
 # imports
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
 from config import app_config
 
 
@@ -13,9 +15,9 @@ def create_app(config_name):
     app.config.from_pyfile('config.py')
     db.init_app(app)
 
-    @app.route('/')
-    def hello_world():
-        return 'Hello, World!'
+    migrate = Migrate(app, db)
+
+    from app import model
 
     return app
 
