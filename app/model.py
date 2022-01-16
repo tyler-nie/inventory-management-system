@@ -11,4 +11,4 @@ class Item(db.Model):
     description = db.Column(db.String(300))
 
     def __repr__(self):
-        return f'<Item: {self.name}>'
+        return f'<Item: name={self.name} quantity={self.quantity}>'
