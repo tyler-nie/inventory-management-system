@@ -8,3 +8,4 @@ cryptography
 Flask-WTF
 flask-bootstrap
 Werkzeug
+Flask-Testing

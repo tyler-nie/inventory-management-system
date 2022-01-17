@@ -89,8 +89,6 @@ def delete_item(id):
     # redirect to items page
     return redirect(url_for('items.list_items'))
 
-    # return render_template(title = "Delete Item")
-
 def generate_csv(items):
         """
         Generate a csv file
