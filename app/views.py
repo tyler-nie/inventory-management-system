@@ -66,3 +66,18 @@ def edit_item(id):
     form.name.data = item.name
     # load item template
     return render_template('items/item.html', action ="Edit", add_item = add_item, form = form, item = item, title = "Edit Item")
+
+def delete_item(id):
+    """
+    Delete a item from the database
+    """
+
+    item = Item.query.get_or_404(id)
+    db.session.delete(item)
+    db.session.commit()
+    flash('You have deleted the item')
+
+    # redirect to items page
+    return redirect(url_for('list_items'))
+
+    return render_template(title = "Delete Item")
