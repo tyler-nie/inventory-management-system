@@ -1,19 +1,22 @@
 # Imports
 from flask import abort, flash, redirect, render_template, url_for
-from forms import ItemForm
-from . import db
-from . import Item
+from .forms import ItemForm
+from .. import db
+from ..model import Item
+from . import items_blueprint
 
+@items_blueprint.route('/', methods = ['GET', 'POST'])
 def list_items():
     """
     List all items
     """
-
+    
     items = Item.query.all()
 
     return render_template('items/items.html',
                           items = items, title="Items")
 
+@items_blueprint.route('/add', methods=['GET', 'POST'])
 def add_item():
     """
     Add an Item to the database
@@ -37,11 +40,12 @@ def add_item():
             flash('Sorry: item name already exists.')
         
         # redirect to items page
-        return redirect(url_for('list_items'))
+        return redirect(url_for('items.list_items'))
 
     # load item template
     return render_template('items/item.html', action = "Add", add_item = add_item, form = form, title = "Add Item")
 
+@items_blueprint.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_item(id):
     """
     Edit an Item
@@ -51,7 +55,7 @@ def edit_item(id):
 
     item = Item.query.get_or_404(id)
     form = ItemForm(obj=item)
-    if form.validate_on_submit:
+    if form.validate_on_submit():
         item.name = form.name.data
         item.quantity = form.quantity.data
         item.description = form.description.data
@@ -59,7 +63,7 @@ def edit_item(id):
         flash('You have edited the item.')
 
         # redirect to items page
-        return redirect(url_for('list_items'))
+        return redirect(url_for('items.list_items'))
 
     form.description.data = item.description
     form.quantity.data = item.quantity
@@ -67,6 +71,7 @@ def edit_item(id):
     # load item template
     return render_template('items/item.html', action ="Edit", add_item = add_item, form = form, item = item, title = "Edit Item")
 
+@items_blueprint.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete_item(id):
     """
     Delete a item from the database
@@ -78,6 +83,6 @@ def delete_item(id):
     flash('You have deleted the item')
 
     # redirect to items page
-    return redirect(url_for('list_items'))
+    return redirect(url_for('items.list_items'))
 
-    return render_template(title = "Delete Item")
+    # return render_template(title = "Delete Item")
