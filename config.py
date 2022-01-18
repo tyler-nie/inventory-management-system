@@ -9,7 +9,7 @@ class DevelopmentConfig(Config):
     """
     Development configurations
     """
-
+    DEBUG = True
     SQLALCHEMY_ECHO = True
 
 class ProductionConfig(Config):
@@ -24,6 +24,7 @@ class TestingConfig(Config):
     Testing configurations
     """
 
+    DEBUG = True
     TESTING = True
 
 app_config = {
