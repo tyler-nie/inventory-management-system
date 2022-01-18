@@ -1,4 +1,4 @@
-instance/
+instance/config.py
 venv/
 __pycache__/
 app/__pycache__/
